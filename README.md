@@ -70,7 +70,7 @@ Jump straight to [`notebooks/1-setup/01_setup.ipynb`](./notebooks/1-setup/01_set
 ### Initial Setup
 ```bash
 # Clone and setup
-git clone <repository-url>
+git clone https://github.com/markuskuehnle/credit-ocr-system
 cd credit-ocr-system
 
 # Create environment and install dependencies
