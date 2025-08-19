@@ -95,7 +95,7 @@ docker compose logs [service-name]
 docker compose restart [service-name]
 ```
 
-## 📋 Prerequisites
+## Prerequisites
 
 ### Required Software
 - **Python 3.10+** - Runtime environment
