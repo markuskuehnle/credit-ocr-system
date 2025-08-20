@@ -11,4 +11,12 @@ dependencies = [
     "redis>=5.0.0",
     "psycopg2-binary>=2.9.9",
     "psutil>=5.9.0",
+    "matplotlib>=3.10.5",
+    "pdf2image>=1.17.0",
+    "pymupdf>=1.26.3",
+    "aiohttp>=3.12.15",
+    "dataclasses>=0.8",
+    "opencv-python>=4.8.0",
+    "pillow>=10.0.0",
+    "setuptools>=80.9.0",
 ]
