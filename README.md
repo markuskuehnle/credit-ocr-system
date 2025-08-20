@@ -2,6 +2,10 @@
 
 *Transform manual credit document processing into intelligent, automated workflows using local AI and microservices architecture.*
 
+This project is a comprehensive tutorial that guides you through building a scalable OCR system for credit request document processing. You'll learn how to extract, analyze, and validate financial data from PDFs and scanned documents using local AI models and microservices architecture. The tutorial covers everything from infrastructure setup to advanced spatial analysis techniques, providing you with the skills to build production-ready document processing systems.
+
+![Credit OCR System Architecture](docs/imgs/architecture.png)
+
 ---
 
 ## Quick Start
@@ -127,19 +131,19 @@ The patterns you'll learn here are foundational for building any modern document
 
 ```
 credit-ocr-system/
-├── README.md                 # This file - project overview
-├── compose.yml              # Docker services orchestration
-├── pyproject.toml           # Python dependencies
-├── config/                  # Configuration files
-├── notebooks/               # Learning & development notebooks
-│   ├── 1-setup/            # Infrastructure setup tutorial
-│   │   ├── README.md       # Architecture deep dive
-│   │   └── 01_setup.ipynb  # Executable setup guide
-│   └── 2-ocr-based-text-extraction/  # OCR text extraction tutorial
-│       ├── README.md       # OCR theory & spatial analysis guide
+├── README.md                             # This file - project overview
+├── compose.yml                           # Docker services orchestration
+├── pyproject.toml                        # Python dependencies
+├── config/                               # Configuration files
+├── notebooks/                            # Learning & development notebooks
+│   ├── 1-setup/                          # Infrastructure setup tutorial
+│   │   ├── README.md                     # Architecture deep dive
+│   │   └── 01_setup.ipynb                # Executable setup guide
+│   └── 2-ocr-based-text-extraction/      # OCR text extraction tutorial
+│       ├── README.md                     # OCR theory & spatial analysis guide
 │       └── 02_ocr_text_extraction.ipynb  # EasyOCR implementation
-├── src/                    # Application source code (future)
-└── tests/                  # Test suites (future)
+├── src/                                  # Application source code (future)
+└── tests/                                # Test suites (future)
 ```
 
 ## Configuration
