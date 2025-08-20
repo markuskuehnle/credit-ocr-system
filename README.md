@@ -1,4 +1,4 @@
-# Credit OCR System for Credit Evaluation
+# OCR System for Credit Evaluation
 
 *Transform manual credit document processing into intelligent, automated workflows using local AI and microservices architecture.*
 
