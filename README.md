@@ -12,7 +12,11 @@
    - **Executable Guide**: [`01_setup.ipynb`](./notebooks/1-setup/01_setup.ipynb) - Step-by-step setup
    - **Deep Dive**: [`README.md`](./notebooks/1-setup/README.md) - Architecture & learning resources
 
-2. **Next Steps** → Continue with subsequent notebooks for document processing implementation
+2. **OCR Text Extraction** → [`notebooks/2-ocr-based-text-extraction/`](./notebooks/2-ocr-based-text-extraction/)
+   - **Executable Guide**: [`02_ocr_text_extraction.ipynb`](./notebooks/2-ocr-based-text-extraction/02_ocr_text_extraction.ipynb) - EasyOCR implementation with spatial analysis
+   - **Deep Dive**: [`README.md`](./notebooks/2-ocr-based-text-extraction/README.md) - OCR theory, spatial reconstruction, and production considerations
+
+3. **Next Steps** → Continue with subsequent notebooks for LLM integration and document analysis
 
 ---
 
@@ -128,9 +132,12 @@ credit-ocr-system/
 ├── pyproject.toml           # Python dependencies
 ├── config/                  # Configuration files
 ├── notebooks/               # Learning & development notebooks
-│   └── 1-setup/            # Infrastructure setup tutorial
-│       ├── README.md       # Architecture deep dive
-│       └── 01_setup.ipynb  # Executable setup guide
+│   ├── 1-setup/            # Infrastructure setup tutorial
+│   │   ├── README.md       # Architecture deep dive
+│   │   └── 01_setup.ipynb  # Executable setup guide
+│   └── 2-ocr-based-text-extraction/  # OCR text extraction tutorial
+│       ├── README.md       # OCR theory & spatial analysis guide
+│       └── 02_ocr_text_extraction.ipynb  # EasyOCR implementation
 ├── src/                    # Application source code (future)
 └── tests/                  # Test suites (future)
 ```
