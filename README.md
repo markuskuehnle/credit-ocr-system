@@ -8,22 +8,6 @@ This project is a comprehensive tutorial that guides you through building a scal
 
 ---
 
-## Quick Start
-
-**Ready to build? Start here:**
-
-1. **Setup Infrastructure** → [`notebooks/1-setup/`](./notebooks/1-setup/)
-   - **Executable Guide**: [`01_setup.ipynb`](./notebooks/1-setup/01_setup.ipynb) - Step-by-step setup
-   - **Deep Dive**: [`README.md`](./notebooks/1-setup/README.md) - Architecture & learning resources
-
-2. **OCR Text Extraction** → [`notebooks/2-ocr-based-text-extraction/`](./notebooks/2-ocr-based-text-extraction/)
-   - **Executable Guide**: [`02_ocr_text_extraction.ipynb`](./notebooks/2-ocr-based-text-extraction/02_ocr_text_extraction.ipynb) - EasyOCR implementation with spatial analysis
-   - **Deep Dive**: [`README.md`](./notebooks/2-ocr-based-text-extraction/README.md) - OCR theory, spatial reconstruction, and production considerations
-
-3. **Next Steps** → Continue with subsequent notebooks for LLM integration and document analysis
-
----
-
 ## What This System Does
 
 The Credit OCR System automates the processing of credit-related documents:
@@ -34,10 +18,20 @@ The Credit OCR System automates the processing of credit-related documents:
 - **Stores** results securely in local databases
 - **Processes** documents asynchronously for scale
 
+### Document Processing Pipeline
+
+1. **Document Upload** → Documents are uploaded to a Document Management System (DMS)
+2. **Automatic Processing** → Our system immediately processes uploaded documents using OCR and AI
+3. **Data Extraction** → Key financial information is extracted with confidence scores
+4. **Database Storage** → Extracted data is stored in PostgreSQL for quick retrieval
+5. **API Access** → Frontend applications can access the processed data via API
+6. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
+7. **Manual Correction** → Users can correct any inaccuracies in the extracted data
+
 ### Real-World Impact
 
 **Before:** Loan officers manually review 15-20 page applications, taking hours per case  
-**After:** Automated processing extracts and analyzes key data in under 10 minutes
+**After:** Automated processing extracts and analyzes key data in under 10 minutes, with human oversight for accuracy
 
 ## System Architecture
 
@@ -47,7 +41,7 @@ The Credit OCR System automates the processing of credit-related documents:
 |--------------|-------------------------------------------|-----------------------|
 | **PostgreSQL** | Document metadata & extracted data storage | Relational database   |
 | **Redis**      | Message broker for background job processing | In-memory data store  |
-| **Ollama**     | Local AI model hosting (Llama3.1:8b)        | LLM inference server  |
+| **Ollama**     | Local LLM model hosting (Llama3.1:8b)        | LLM inference server  |
 | **Azurite**    | Document file storage (Azure Blob emulator) | Object storage        |
 
 ### Key Design Principles
@@ -56,6 +50,8 @@ The Credit OCR System automates the processing of credit-related documents:
 - **Privacy-Focused**: No external AI APIs or data sharing
 - **Microservices**: Each service scales independently
 - **Production-Ready**: Docker Compose orchestration with health checks
+
+---
 
 ## Learning Path
 
@@ -70,6 +66,20 @@ Then proceed to [`notebooks/1-setup/01_setup.ipynb`](./notebooks/1-setup/01_setu
 - Service validation
 - Health monitoring
 - Configuration management
+
+## Quick Start
+
+**Ready to build? Start here:**
+
+1. **Setup Infrastructure** → [`notebooks/1-setup/`](./notebooks/1-setup/)
+   - **Executable Guide**: [`01_setup.ipynb`](./notebooks/1-setup/01_setup.ipynb) - Step-by-step setup
+   - **Deep Dive**: [`README.md`](./notebooks/1-setup/README.md) - Architecture & learning resources
+
+2. **OCR Text Extraction** → [`notebooks/2-ocr-based-text-extraction/`](./notebooks/2-ocr-based-text-extraction/)
+   - **Executable Guide**: [`02_ocr_text_extraction.ipynb`](./notebooks/2-ocr-based-text-extraction/02_ocr_text_extraction.ipynb) - EasyOCR implementation with spatial analysis
+   - **Deep Dive**: [`README.md`](./notebooks/2-ocr-based-text-extraction/README.md) - OCR theory, spatial reconstruction, and production considerations
+
+3. **Next Steps** → Continue with subsequent notebooks for LLM integration and document analysis
 
 ## Development Workflow
 
