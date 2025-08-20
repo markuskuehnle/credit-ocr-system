@@ -53,20 +53,6 @@ The Credit OCR System automates the processing of credit-related documents:
 
 ---
 
-## Learning Path
-
-Everyone should start with the tutorial in [`notebooks/1-setup/README.md`](./notebooks/1-setup/README.md) which explains:
-- Why microservices architecture
-- How document processing pipelines work
-- Technology choices and alternatives
-- Real-world enterprise patterns
-
-Then proceed to [`notebooks/1-setup/01_setup.ipynb`](./notebooks/1-setup/01_setup.ipynb) for:
-- Executable setup steps
-- Service validation
-- Health monitoring
-- Configuration management
-
 ## Quick Start
 
 **Ready to build? Start here:**
