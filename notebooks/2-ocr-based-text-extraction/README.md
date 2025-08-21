@@ -1,4 +1,4 @@
-# OCR Text Extraction Tutorial
+# OCR-based Text Extraction
 
 *Learn how to extract structured data from documents using spatial analysis*
 
