@@ -44,7 +44,7 @@ services:
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
     container_name: azurite-blob-storages
-    command: ["azurite", "--location", "/data", "--blobHost", "0.0.0.0"]
+    command: ["azurite", "--location", "/data", "--blobHost", "0.0.0.0", "--skipApiVersionCheck"]
     ports:
       - "10000:10000"
     volumes:

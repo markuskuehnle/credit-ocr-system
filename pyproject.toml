@@ -19,4 +19,5 @@ dependencies = [
     "opencv-python>=4.8.0",
     "pillow>=10.0.0",
     "setuptools>=80.9.0",
+    "azure-storage-blob>=12.26.0",
 ]
