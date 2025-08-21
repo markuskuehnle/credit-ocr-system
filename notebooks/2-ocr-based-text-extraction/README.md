@@ -2,7 +2,7 @@
 
 *Learn how to extract structured data from documents using spatial analysis*
 
-![OCR Text Extraction](../../docs/imgs/2-ocr-text-extraction.png)
+![OCR Text Extraction](../../../docs/imgs/2-ocr-text-extraction.png)
 
 ---
 
