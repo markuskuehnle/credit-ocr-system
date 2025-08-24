@@ -21,12 +21,13 @@ The Credit OCR System automates the processing of credit-related documents:
 ### Document Processing Pipeline
 
 1. **Document Upload** → Documents are uploaded to a Document Management System (DMS)
-2. **Automatic Processing** → Our system immediately processes uploaded documents using OCR and AI
-3. **Data Extraction** → Key financial information is extracted with confidence scores
-4. **Database Storage** → Extracted data is stored in PostgreSQL for quick retrieval
-5. **API Access** → Frontend applications can access the processed data via API
-6. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
-7. **Manual Correction** → Users can correct any inaccuracies in the extracted data
+2. **OCR Processing** → EasyOCR extracts text with spatial analysis and bounding boxes
+3. **LLM Field Extraction** → Local AI models extract and validate structured business data
+4. **Data Validation** → Business rules validate extracted information with confidence scores
+5. **Database Storage** → Extracted data is stored in PostgreSQL for quick retrieval
+6. **API Access** → Frontend applications can access the processed data via API
+7. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
+8. **Manual Correction** → Users can correct any inaccuracies in the extracted data
 
 ### Real-World Impact
 
@@ -65,7 +66,11 @@ The Credit OCR System automates the processing of credit-related documents:
    - **Executable Guide**: [`02_ocr_text_extraction.ipynb`](./notebooks/2-ocr-based-text-extraction/02_ocr_text_extraction.ipynb) - EasyOCR implementation with spatial analysis
    - **Deep Dive**: [`README.md`](./notebooks/2-ocr-based-text-extraction/README.md) - OCR theory, spatial reconstruction, and production considerations
 
-3. **Next Steps** → Continue with subsequent notebooks for LLM integration and document analysis
+3. **LLM Field Extraction** → [`notebooks/3-llm-field-extraction/`](./notebooks/3-llm-field-extraction/)
+   - **Executable Guide**: [`03_llm_field_extraction.ipynb`](./notebooks/3-llm-field-extraction/03_llm_field_extraction.ipynb) - Local LLM processing with llama3.1:8b model
+   - **Deep Dive**: [`README.md`](./notebooks/3-llm-field-extraction/README.md) - LLM integration, prompt engineering, and field validation
+
+4. **Next Steps** → Continue with subsequent notebooks for advanced document analysis
 
 ## Development Workflow
 
@@ -133,9 +138,12 @@ credit-ocr-system/
 │   ├── 1-setup/                          # Infrastructure setup tutorial
 │   │   ├── README.md                     # Architecture deep dive
 │   │   └── 01_setup.ipynb                # Executable setup guide
-│   └── 2-ocr-based-text-extraction/      # OCR text extraction tutorial
-│       ├── README.md                     # OCR theory & spatial analysis guide
-│       └── 02_ocr_text_extraction.ipynb  # EasyOCR implementation
+│   ├── 2-ocr-based-text-extraction/      # OCR text extraction tutorial
+│   │   ├── README.md                     # OCR theory & spatial analysis guide
+│   │   └── 02_ocr_text_extraction.ipynb  # EasyOCR implementation
+│   └── 3-llm-field-extraction/           # LLM field extraction tutorial
+│       ├── README.md                     # LLM integration & prompt engineering guide
+│       └── 03_llm_field_extraction.ipynb # Local LLM processing implementation
 ├── src/                                  # Application source code (future)
 └── tests/                                # Test suites (future)
 ```
