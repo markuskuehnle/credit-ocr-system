@@ -15,7 +15,7 @@
 
 **Required libraries:** EasyOCR, pdf2image, matplotlib, numpy
 
-**Estimated time:** 20-20 minutes to complete the notebook
+**Estimated time:** 20-30 minutes to complete the notebook
 
 ---
 
