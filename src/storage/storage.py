@@ -6,7 +6,9 @@ import os
 import threading
 from enum import Enum
 from pathlib import PurePosixPath
-from typing import Optional
+from typing import Optional, Dict, Any
+import json
+from datetime import datetime
 
 from azure.storage.blob import BlobServiceClient, BlobClient
 from azure.core.exceptions import ResourceExistsError
@@ -144,6 +146,58 @@ class BlobStorage:
         blob_client = self.blob_client(uuid, stage, ext)
         blob_client.upload_blob(data, overwrite=overwrite)
         print(f"Uploaded blob: {stage.value}/{self.blob_path(uuid, stage, ext)}")
+
+    def upload_document_data(
+        self, 
+        uuid: str, 
+        stage: Stage, 
+        ext: str, 
+        data: Dict[str, Any], 
+        metadata: Optional[Dict[str, Any]] = None,
+        overwrite: bool = True
+    ) -> None:
+        """
+        Upload document data with standardized structure.
+        
+        Args:
+            uuid: Document UUID
+            stage: Processing stage
+            ext: File extension
+            data: The actual data to store
+            metadata: Optional metadata
+            overwrite: Whether to overwrite existing blob
+        """
+        standardized_data = {
+            "document_uuid": uuid,
+            "timestamp": datetime.now().isoformat(),
+            "data": data,
+            "metadata": metadata or {}
+        }
+        
+        blob_data = json.dumps(standardized_data, indent=2, ensure_ascii=False).encode('utf-8')
+        self.upload_blob(uuid, stage, ext, blob_data, overwrite)
+
+    def download_document_data(self, uuid: str, stage: Stage, ext: str) -> Optional[Dict[str, Any]]:
+        """
+        Download and parse document data with standardized structure.
+        
+        Args:
+            uuid: Document UUID
+            stage: Processing stage
+            ext: File extension
+            
+        Returns:
+            Parsed document data dictionary or None if not found
+        """
+        blob_bytes = self.download_blob(uuid, stage, ext)
+        if blob_bytes is None:
+            return None
+        
+        try:
+            return json.loads(blob_bytes.decode('utf-8'))
+        except (json.JSONDecodeError, UnicodeDecodeError) as e:
+            print(f"Failed to parse document data: {e}")
+            return None
     
     def download_blob(self, uuid: str, stage: Stage, ext: str) -> Optional[bytes]:
         """
