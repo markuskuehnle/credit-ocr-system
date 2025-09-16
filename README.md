@@ -21,7 +21,7 @@ The Credit OCR System automates the processing of credit-related documents:
 
 ### Document Processing Pipeline
 
-1. **Document Upload** → Documents are uploaded to blob storage for processing
+1. **Document Upload** → Documents are uploaded to DMS with metadata and blob storage
 2. **OCR Processing** → EasyOCR extracts text with spatial analysis and bounding boxes
 3. **LLM Field Extraction** → Local AI models extract and validate structured business data
 4. **Visualization Generation** → OCR results are visualized with bounding box overlays
@@ -147,11 +147,47 @@ credit-ocr-system/
 │   ├── 3-llm-field-extraction/           # LLM field extraction tutorial
 │   │   ├── README.md                     # LLM integration & prompt engineering guide
 │   │   └── 03_llm_field_extraction.ipynb # Local LLM processing implementation
-│   └── 4-function-integration/           # Function integration & production pipeline
-│       ├── README.md                     # Integration architecture & scalability guide
-│       └── 04_integration.ipynb          # Complete integrated pipeline implementation
-├── src/                                  # Application source code (future)
-└── tests/                                # Test suites (future)
+│   ├── 4-function-integration/           # Function integration & production pipeline
+│   │   ├── README.md                     # Integration architecture & scalability guide
+│   │   └── 04_integration.ipynb          # Complete integrated pipeline implementation
+│   └── 5-dms-upload/                     # DMS integration & document management
+│       ├── README.md                     # DMS patterns & adapter design guide
+│       └── 05_dms_upload.ipynb           # Document management system implementation
+├── src/                                  # Application source code
+│   ├── __init__.py                       # Package initialization
+│   ├── config/                           # Configuration management
+│   │   ├── __init__.py                   # Package initialization
+│   │   └── system.py                     # System configuration
+│   ├── dms/                              # Document Management System modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   ├── environment.py                # DMS mock environment setup
+│   │   ├── service.py                    # DMS service layer
+│   │   ├── interfaces.py                 # Storage and metadata interfaces
+│   │   └── adapters.py                   # Concrete implementations
+│   ├── integration/                      # Pipeline integration modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   ├── orchestration.py              # Workflow orchestration
+│   │   └── pipeline.py                   # Processing pipeline
+│   ├── llm/                              # Large Language Model modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   ├── client.py                     # LLM client abstraction
+│   │   ├── config.py                     # LLM configuration
+│   │   ├── field_extractor.py            # Field extraction logic
+│   │   └── validation.py                 # Data validation
+│   ├── ocr/                              # OCR processing modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   ├── easyocr_client.py             # EasyOCR client wrapper
+│   │   ├── label_value_extraction.py     # Label-value pair extraction
+│   │   ├── postprocess.py                # OCR post-processing
+│   │   └── spatial_analysis.py           # Spatial document analysis
+│   ├── storage/                          # Storage abstraction modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   ├── blob_operations.py            # Blob storage operations
+│   │   └── storage.py                    # Storage abstraction layer
+│   └── visualization/                    # Visualization modules
+│       ├── __init__.py                   # Package initialization
+│       └── ocr_visualization.py          # OCR result visualization
+└── tests/                                # Test suites
 ```
 
 ## Configuration
