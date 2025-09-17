@@ -147,6 +147,25 @@ class PostgresMetadataRepository(MetadataRepository):
                 self._conn.rollback()
                 return False
 
+    def update_processing_status(self, document_id: str, status: str) -> bool:
+        with self._conn.cursor() as cursor:
+            try:
+                cursor.execute(
+                    """
+                    UPDATE documents
+                    SET processing_status = %s,
+                        updated_at = NOW()
+                    WHERE id = %s
+                    """,
+                    (status, document_id),
+                )
+                updated = cursor.rowcount > 0
+                self._conn.commit()
+                return updated
+            except Exception:
+                self._conn.rollback()
+                return False
+
     def insert_extraction_job(self, job_id: str, document_id: str, status: str) -> None:
         with self._conn.cursor() as cursor:
             cursor.execute(

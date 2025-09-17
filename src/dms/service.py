@@ -155,4 +155,17 @@ class DmsService:
         """Get all extraction jobs for a document."""
         return self.metadata_repository.list_extraction_jobs(document_id)
 
+    # Processing status helpers for pipeline integration
+    def mark_ocr_running(self, document_id: str) -> bool:
+        """Set processing_status to 'ocr running'."""
+        return self.metadata_repository.update_processing_status(document_id, "ocr running")
+
+    def mark_llm_running(self, document_id: str) -> bool:
+        """Set processing_status to 'llm running'."""
+        return self.metadata_repository.update_processing_status(document_id, "llm running")
+
+    def mark_processing_done(self, document_id: str) -> bool:
+        """Set processing_status to 'done'."""
+        return self.metadata_repository.update_processing_status(document_id, "done")
+
 

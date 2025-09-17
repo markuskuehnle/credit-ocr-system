@@ -42,6 +42,9 @@ class MetadataRepository(Protocol):
     def update_document_status(self, document_id: str, status: str) -> bool:
         """Update document text extraction status."""
 
+    def update_processing_status(self, document_id: str, status: str) -> bool:
+        """Update overall document processing status (ocr running, llm running, done)."""
+
     def insert_extraction_job(self, job_id: str, document_id: str, status: str) -> None:
         """Insert a new extraction job."""
 

@@ -28,7 +28,8 @@ The Credit OCR System automates the processing of credit-related documents:
 5. **Stage-Based Storage** → Results are organized by processing stage (raw, OCR, LLM, annotated)
 6. **Data Validation** → Business rules validate extracted information with confidence scores
 7. **Integrated Pipeline** → Complete workflow orchestration with error handling and logging
-8. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
+8. **Status Tracking** → Real-time status updates track document readiness and processing stages
+9. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
 
 ### Real-World Impact
 
@@ -74,6 +75,14 @@ The Credit OCR System automates the processing of credit-related documents:
 4. **Function Integration** → [`notebooks/4-function-integration/`](./notebooks/4-function-integration/)
    - **Executable Guide**: [`04_integration.ipynb`](./notebooks/4-function-integration/04_integration.ipynb) - Complete integrated pipeline combining OCR and LLM processing
    - **Deep Dive**: [`README.md`](./notebooks/4-function-integration/README.md) - Integration architecture, scalability considerations, and production patterns
+
+5. **DMS Upload (Mock)** → [`notebooks/5-dms-upload/`](./notebooks/5-dms-upload/)
+   - **Executable Guide**: [`05_dms_upload.ipynb`](./notebooks/5-dms-upload/05_dms_upload.ipynb) - Document management system implementation
+   - **Deep Dive**: [`README.md`](./notebooks/5-dms-upload/README.md) - DMS patterns, adapter design, and integration guidance
+
+6. **Document Processing Status** → [`notebooks/6-document-processing-status/`](./notebooks/6-document-processing-status/)
+   - **Executable Guide**: [`06_document_processing_status.ipynb`](./notebooks/6-document-processing-status/06_document_processing_status.ipynb) - Status models and extraction job tracking
+   - **Deep Dive**: [`README.md`](./notebooks/6-document-processing-status/README.md) - Status model theory, benefits, tradeoffs, and best practices
 
 ## Development Workflow
 
@@ -150,9 +159,12 @@ credit-ocr-system/
 │   ├── 4-function-integration/           # Function integration & production pipeline
 │   │   ├── README.md                     # Integration architecture & scalability guide
 │   │   └── 04_integration.ipynb          # Complete integrated pipeline implementation
-│   └── 5-dms-upload/                     # DMS integration & document management
-│       ├── README.md                     # DMS patterns & adapter design guide
-│       └── 05_dms_upload.ipynb           # Document management system implementation
+│   ├── 5-dms-upload/                     # DMS integration & document management
+│   │   ├── README.md                     # DMS patterns & adapter design guide
+│   │   └── 05_dms_upload.ipynb           # Document management system implementation
+│   └── 6-document-processing-status/     # Status models & extraction jobs
+│       ├── README.md                     # Status model theory & best practices
+│       └── 06_document_processing_status.ipynb # Status tracking implementation
 ├── src/                                  # Application source code
 │   ├── __init__.py                       # Package initialization
 │   ├── config/                           # Configuration management

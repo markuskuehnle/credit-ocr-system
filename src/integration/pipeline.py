@@ -7,6 +7,10 @@ from ..llm.config import load_document_config, DocumentTypeConfig
 from ..llm.client import OllamaClient
 from ..llm.client import GenerativeLlm
 from ..storage.storage import get_storage, Stage
+from ..dms.service import DmsService
+from ..dms.adapters import PostgresMetadataRepository
+from ..config.system import load_system_config
+import psycopg2
 from ..config.system import load_system_config
 
 logger = logging.getLogger(__name__)
@@ -25,6 +29,22 @@ async def process_document_with_ocr(document_id: str, pdf_data: bytes) -> Dict[s
     """
     print(f"Processing document {document_id} with OCR...")
     
+    # Optional: mark processing status in DMS (section 6)
+    try:
+        system_config = load_system_config()
+        conn = psycopg2.connect(
+            dbname=system_config.get('db', {}).get('name', 'postgres'),
+            user=system_config.get('db', {}).get('user', 'postgres'),
+            password=system_config.get('db', {}).get('password', 'postgres'),
+            host=system_config.get('db', {}).get('host', 'localhost'),
+            port=system_config.get('db', {}).get('port', 5432),
+        )
+        dms = DmsService(storage_client=get_storage()._client if hasattr(get_storage(), '_client') else None,
+                         metadata_repository=PostgresMetadataRepository(conn))
+        dms.mark_ocr_running(document_id)
+    except Exception:
+        pass
+
     # Step 1: OCR Processing
     print("  - Extracting text with OCR...")
     ocr_results, pdf_images = extract_text_bboxes_with_ocr(pdf_data)
@@ -93,6 +113,22 @@ async def process_document_with_llm(document_id: str, ocr_results: Dict[str, Any
     # Step 2: Load document configuration
     doc_config = load_document_config("config/document_types.conf")
     
+    # Optional: mark processing status in DMS (section 6)
+    try:
+        system_config = load_system_config()
+        conn = psycopg2.connect(
+            dbname=system_config.get('db', {}).get('name', 'postgres'),
+            user=system_config.get('db', {}).get('user', 'postgres'),
+            password=system_config.get('db', {}).get('password', 'postgres'),
+            host=system_config.get('db', {}).get('host', 'localhost'),
+            port=system_config.get('db', {}).get('port', 5432),
+        )
+        dms = DmsService(storage_client=get_storage()._client if hasattr(get_storage(), '_client') else None,
+                         metadata_repository=PostgresMetadataRepository(conn))
+        dms.mark_llm_running(document_id)
+    except Exception:
+        pass
+
     # Step 3: Initialize LLM client
     llm_config = GenerativeLlm(
         url=system_config['llm']['url'],
@@ -136,4 +172,10 @@ async def process_document_with_llm(document_id: str, ocr_results: Dict[str, Any
     )
     
     print(f"  - LLM processing completed for document {document_id}")
+
+    # Optional: mark processing done in DMS (section 6)
+    try:
+        dms.mark_processing_done(document_id)
+    except Exception:
+        pass
     return llm_processing_results
