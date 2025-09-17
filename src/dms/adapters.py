@@ -78,7 +78,8 @@ class PostgresMetadataRepository(MetadataRepository):
         with self._conn.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT id, file_path, filename, created_at, mime_type, file_size
+                SELECT id, file_path, filename, created_at, mime_type, file_size, 
+                       text_extraction_status, processing_status
                 FROM documents WHERE id = %s
                 """,
                 (document_id,),
@@ -95,7 +96,8 @@ class PostgresMetadataRepository(MetadataRepository):
                 "source_filename": row[2],
                 "linked_entity": None,
                 "linked_entity_id": None,
-                "textextraction_status": None,
+                "textextraction_status": row[6],
+                "processing_status": row[7],
                 "mime_type": row[4],
                 "file_size": row[5],
             }
@@ -105,7 +107,8 @@ class PostgresMetadataRepository(MetadataRepository):
         with self._conn.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT id, file_path, filename, created_at, mime_type, file_size
+                SELECT id, file_path, filename, created_at, mime_type, file_size,
+                       text_extraction_status, processing_status
                 FROM documents ORDER BY created_at DESC
                 """
             )
@@ -120,7 +123,8 @@ class PostgresMetadataRepository(MetadataRepository):
                     "source_filename": row[2],
                     "linked_entity": None,
                     "linked_entity_id": None,
-                    "textextraction_status": None,
+                    "textextraction_status": row[6],
+                    "processing_status": row[7],
                     "mime_type": row[4],
                     "file_size": row[5],
                 }
