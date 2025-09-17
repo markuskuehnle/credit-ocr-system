@@ -128,19 +128,85 @@ class PostgresMetadataRepository(MetadataRepository):
             ]
 
     def update_document_status(self, document_id: str, status: str) -> bool:
-        # Not supported by current schema; treat as no-op
-        return False
+        # Update status if column exists (schema adds it)
+        with self._conn.cursor() as cursor:
+            try:
+                cursor.execute(
+                    """
+                    UPDATE documents
+                    SET text_extraction_status = %s,
+                        updated_at = NOW()
+                    WHERE id = %s
+                    """,
+                    (status, document_id),
+                )
+                updated = cursor.rowcount > 0
+                self._conn.commit()
+                return updated
+            except Exception:
+                self._conn.rollback()
+                return False
 
     def insert_extraction_job(self, job_id: str, document_id: str, status: str) -> None:
-        # Not supported by current schema
-        raise NotImplementedError("ExtractionJob not supported by current schema")
+        with self._conn.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO extraction_jobs (id, document_id, status)
+                VALUES (%s, %s, %s)
+                """,
+                (job_id, document_id, status),
+            )
+            self._conn.commit()
 
     def update_extraction_job(self, job_id: str, status: str, error_message: Optional[str]) -> bool:
-        # Not supported by current schema
-        raise NotImplementedError("ExtractionJob not supported by current schema")
+        with self._conn.cursor() as cursor:
+            if error_message is not None:
+                cursor.execute(
+                    """
+                    UPDATE extraction_jobs
+                    SET status = %s,
+                        error_message = %s,
+                        completed_at = CASE WHEN %s IN ('done', 'failed', 'finished') THEN NOW() ELSE completed_at END
+                    WHERE id = %s
+                    """,
+                    (status, error_message, status, job_id),
+                )
+            else:
+                cursor.execute(
+                    """
+                    UPDATE extraction_jobs
+                    SET status = %s,
+                        completed_at = CASE WHEN %s IN ('done', 'failed', 'finished') THEN NOW() ELSE completed_at END
+                    WHERE id = %s
+                    """,
+                    (status, status, job_id),
+                )
+            updated = cursor.rowcount > 0
+            self._conn.commit()
+            return updated
 
     def list_extraction_jobs(self, document_id: str) -> List[Dict[str, Any]]:
-        # Not supported by current schema
-        return []
+        with self._conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id, document_id, created_at, completed_at, status, error_message
+                FROM extraction_jobs
+                WHERE document_id = %s
+                ORDER BY created_at DESC
+                """,
+                (document_id,),
+            )
+            rows = cursor.fetchall()
+            return [
+                {
+                    "id": row[0],
+                    "document_id": row[1],
+                    "created_at": row[2],
+                    "completed_at": row[3],
+                    "status": row[4],
+                    "error_message": row[5],
+                }
+                for row in rows
+            ]
 
 

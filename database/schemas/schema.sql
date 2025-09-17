@@ -15,6 +15,15 @@ CREATE TABLE IF NOT EXISTS documents (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Optional status columns for processing lifecycle
+ALTER TABLE documents
+    ADD COLUMN IF NOT EXISTS text_extraction_status VARCHAR(50)
+        DEFAULT 'not ready'
+        CHECK (text_extraction_status IN ('not ready', 'ready', 'in progress', 'completed', 'failed')),
+    ADD COLUMN IF NOT EXISTS processing_status VARCHAR(50)
+        DEFAULT 'pending extraction'
+        CHECK (processing_status IN ('pending extraction', 'ocr running', 'llm running', 'done'));
+
 CREATE TABLE IF NOT EXISTS ocr_results (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     document_id UUID REFERENCES documents(id) ON DELETE CASCADE,
@@ -25,7 +34,18 @@ CREATE TABLE IF NOT EXISTS ocr_results (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Extraction jobs to track end-to-end processing
+CREATE TABLE IF NOT EXISTS extraction_jobs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    document_id UUID REFERENCES documents(id) ON DELETE CASCADE,
+    status VARCHAR(50) DEFAULT 'pending extraction',
+    error_message TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
 -- Index for better query performance
 CREATE INDEX IF NOT EXISTS idx_documents_filename ON documents(filename);
 CREATE INDEX IF NOT EXISTS idx_ocr_results_document_id ON ocr_results(document_id);
 CREATE INDEX IF NOT EXISTS idx_ocr_results_page_number ON ocr_results(page_number);
+CREATE INDEX IF NOT EXISTS idx_extraction_jobs_document_id ON extraction_jobs(document_id);

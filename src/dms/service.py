@@ -75,6 +75,38 @@ class DmsService:
         )
 
         logger.info(f"Document record created in database with ID: {document_id}")
+        # Determine readiness and optionally create an extraction job
+        allowed_mime_types = {"application/pdf", "image/png", "image/jpeg"}
+        is_mime_type_allowed = mime_type in allowed_mime_types
+
+        # Verify blob is retrievable (basic integrity check)
+        try:
+            downloaded_bytes = self.storage_client.download_bytes("documents", blob_name)
+            is_blob_retrievable = downloaded_bytes is not None and len(downloaded_bytes) > 0
+        except Exception:
+            is_blob_retrievable = False
+
+        is_ready = is_mime_type_allowed and is_blob_retrievable
+
+        if is_ready:
+            # Update status to ready and create an initial extraction job
+            try:
+                self.update_textextraction_status(document_id=document_id, status="ready")
+            except Exception:
+                logger.warning("Failed to update text extraction status to 'ready' for %s", document_id)
+
+            try:
+                self.create_extraction_job(document_id=document_id, state="pending extraction")
+            except Exception:
+                logger.warning("Failed to create initial extraction job for document %s", document_id)
+        else:
+            logger.info(
+                "Document %s not ready: mime_allowed=%s, blob_retrievable=%s",
+                document_id,
+                is_mime_type_allowed,
+                is_blob_retrievable,
+            )
+
         return document_id
 
     def get_document(self, document_id: str) -> Optional[Dict[str, Any]]:
