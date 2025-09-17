@@ -29,7 +29,8 @@ The Credit OCR System automates the processing of credit-related documents:
 6. **Data Validation** → Business rules validate extracted information with confidence scores
 7. **Integrated Pipeline** → Complete workflow orchestration with error handling and logging
 8. **Status Tracking** → Real-time status updates track document readiness and processing stages
-9. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
+9. **Async Processing** → Background processing with Celery workers for scalable, non-blocking operations
+10. **User Review** → Credit officers can review extracted information, confidence scores, and document overlays
 
 ### Real-World Impact
 
@@ -46,6 +47,7 @@ The Credit OCR System automates the processing of credit-related documents:
 | **Redis**      | Message broker for background job processing | In-memory data store  |
 | **Ollama**     | Local LLM model hosting (Llama3.1:8b)        | LLM inference server  |
 | **Azurite**    | Document file storage (Azure Blob emulator) | Object storage        |
+| **Celery**     | Async task processing and worker management | Task queue system     |
 
 ### Key Design Principles
 
@@ -83,6 +85,10 @@ The Credit OCR System automates the processing of credit-related documents:
 6. **Document Processing Status** → [`notebooks/6-document-processing-status/`](./notebooks/6-document-processing-status/)
    - **Executable Guide**: [`06_document_processing_status.ipynb`](./notebooks/6-document-processing-status/06_document_processing_status.ipynb) - Status models and extraction job tracking
    - **Deep Dive**: [`README.md`](./notebooks/6-document-processing-status/README.md) - Status model theory, benefits, tradeoffs, and best practices
+
+7. **Async Processing** → [`notebooks/7-async-processing/`](./notebooks/7-async-processing/)
+   - **Executable Guide**: [`07_async_processing.ipynb`](./notebooks/7-async-processing/07_async_processing.ipynb) - Celery-based async document processing
+   - **Deep Dive**: [`README.md`](./notebooks/7-async-processing/README.md) - Async processing theory, scaling patterns, and production considerations
 
 ## Development Workflow
 
@@ -165,11 +171,16 @@ credit-ocr-system/
 │   └── 6-document-processing-status/     # Status models & extraction jobs
 │       ├── README.md                     # Status model theory & best practices
 │       └── 06_document_processing_status.ipynb # Status tracking implementation
+│   └── 7-async-processing/               # Async processing with Celery
+│       ├── README.md                     # Async processing theory & scaling patterns
+│       └── 07_async_processing.ipynb     # Celery-based async processing implementation
 ├── src/                                  # Application source code
 │   ├── __init__.py                       # Package initialization
 │   ├── config/                           # Configuration management
 │   │   ├── __init__.py                   # Package initialization
 │   │   └── system.py                     # System configuration
+│   ├── celery_app.py                     # Celery application configuration
+│   ├── async_processing.py               # Async document processing service
 │   ├── dms/                              # Document Management System modules
 │   │   ├── __init__.py                   # Package initialization
 │   │   ├── environment.py                # DMS mock environment setup
@@ -196,6 +207,9 @@ credit-ocr-system/
 │   │   ├── __init__.py                   # Package initialization
 │   │   ├── blob_operations.py            # Blob storage operations
 │   │   └── storage.py                    # Storage abstraction layer
+│   ├── tasks/                            # Celery task modules
+│   │   ├── __init__.py                   # Package initialization
+│   │   └── pipeline_tasks.py             # Document processing tasks
 │   └── visualization/                    # Visualization modules
 │       ├── __init__.py                   # Package initialization
 │       └── ocr_visualization.py          # OCR result visualization

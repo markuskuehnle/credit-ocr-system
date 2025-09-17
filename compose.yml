@@ -55,6 +55,36 @@ services:
       timeout: 5s
       retries: 5
 
+  celery-worker:
+    image: python:3.11-slim
+    container_name: celery-worker
+    command: >
+      sh -c "
+        apt-get update && \
+        apt-get install -y --no-install-recommends poppler-utils && \
+        rm -rf /var/lib/apt/lists/* && \
+        python -m venv /opt/venv && \
+        /opt/venv/bin/pip install --upgrade pip && \
+        /opt/venv/bin/pip install . && \
+        /opt/venv/bin/pip uninstall -y opencv-python opencv-contrib-python || true && \
+        /opt/venv/bin/python -m celery -A src.celery_app worker --loglevel=info --concurrency=2
+      "
+    volumes:
+      - .:/app
+    working_dir: /app
+    depends_on:
+      - redis
+      - postgres
+      - azurite
+    environment:
+      - PYTHONPATH=/app
+      - IN_DOCKER=1
+    healthcheck:
+      test: ["CMD", "/opt/venv/bin/python", "-m", "celery", "-A", "src.celery_app", "inspect", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
 volumes:
   pgdata:
   azdata:
