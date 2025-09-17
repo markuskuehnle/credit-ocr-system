@@ -166,6 +166,16 @@ class DmsService:
 
 This design enables easy swapping of storage backends without changing business logic.
 
+### Development approach for this module
+
+For this notebook, we implemented the DMS logic directly in `src/` and only imported it here. In earlier sections (OCR, LLM), we prototyped functions inside notebooks first and then moved them into `src/`.
+
+- This module is integration-focused and not visualization-heavy.
+- Interfaces/adapters benefit from immediate unit tests and stable APIs.
+- Keeping logic in `src/` first reduces drift and encourages modular design.
+
+The notebook demonstrates usage and validates behavior; the implementation is in `src/dms/`.
+
 ## System Architecture Integration
 
 **How DMS Fits into the Credit Processing Pipeline:**
