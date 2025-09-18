@@ -35,11 +35,24 @@ services:
       - "11435:11434"
     volumes:
       - ollama_data:/root/.ollama
+    entrypoint: >
+      sh -c "
+        ollama serve &
+        sleep 5 &&
+        if ! ollama list | grep -q 'llama3.1:8b'; then
+          echo 'Model llama3.1:8b not found, pulling...'
+          ollama pull llama3.1:8b
+        else
+          echo 'Model llama3.1:8b already exists, skipping download'
+        fi &&
+        wait
+      "
     healthcheck:
-      test: ["CMD", "pgrep", "-f", "ollama"]
+      test: ["CMD-SHELL", "ollama list | grep -q 'llama3.1:8b' || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 5
+      retries: 10
+      start_period: 300s
 
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
@@ -83,7 +96,7 @@ services:
       test: ["CMD", "/opt/venv/bin/python", "-m", "celery", "-A", "src.celery_app", "inspect", "ping"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 3e 
 
 volumes:
   pgdata:

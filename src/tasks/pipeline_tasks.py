@@ -1,7 +1,3 @@
-"""
-Celery tasks for document processing pipeline.
-"""
-
 import asyncio
 import logging
 import traceback
@@ -120,6 +116,16 @@ def process_llm_task(self, document_id: str) -> str:
         # Process with LLM
         dms_service = _get_dms_service()
         asyncio.run(process_document_with_llm(document_id, ocr_results, dms_service))
+        
+        # Generate visualization with OCR bounding boxes
+        try:
+            from src.visualization.ocr_visualization import visualize_ocr_results
+            logger.info(f"Generating visualization for document {document_id}")
+            visualize_ocr_results(document_id, ocr_results.get("original_lines", []))
+            logger.info(f"Visualization generated for document {document_id}")
+        except Exception as viz_error:
+            logger.warning(f"Failed to generate visualization for document {document_id}: {viz_error}")
+            # Don't fail the entire task if visualization fails
         
         logger.info(f"Successfully completed {task_name} for document {document_id}")
         return document_id

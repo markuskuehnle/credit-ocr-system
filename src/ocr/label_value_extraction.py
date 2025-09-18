@@ -1,7 +1,3 @@
-"""
-Label-value pair extraction from OCR results.
-"""
-
 from typing import List, Dict, Any
 from .spatial_analysis import detect_lines_on_same_row, reconstruct_split_text_elements
 

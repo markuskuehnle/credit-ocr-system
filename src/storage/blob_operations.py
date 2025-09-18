@@ -1,7 +1,3 @@
-"""
-High-level blob storage operations for OCR results.
-"""
-
 import json
 from typing import Dict, Any, Optional
 from datetime import datetime

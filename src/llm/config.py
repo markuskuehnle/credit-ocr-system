@@ -1,7 +1,3 @@
-"""
-Document configuration loading and management.
-"""
-
 import json
 from typing import Dict, List, Any
 from dataclasses import dataclass

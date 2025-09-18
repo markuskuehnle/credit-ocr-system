@@ -54,4 +54,7 @@ class MetadataRepository(Protocol):
     def list_extraction_jobs(self, document_id: str) -> List[Dict[str, Any]]:
         """List extraction jobs for a document."""
 
+    def list_documents_paginated(self, limit: int, offset: int) -> List[Dict[str, Any]]:
+        """List documents with pagination."""
+
 

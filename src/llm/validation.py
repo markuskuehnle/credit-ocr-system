@@ -1,7 +1,3 @@
-"""
-Field validation functions for extracted data.
-"""
-
 import re
 from typing import Dict, Any
 from .config import DocumentTypeConfig

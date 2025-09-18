@@ -8,6 +8,20 @@ This project is a comprehensive tutorial that guides you through building a scal
 
 ---
 
+## 🚀 Quick Start
+
+**Want to try it immediately?** Use our one-command startup:
+
+```bash
+python3 start_credit_ocr.py
+```
+
+This starts the complete system with web interface at http://127.0.0.1:8000/
+
+📖 See [QUICKSTART.md](QUICKSTART.md) for detailed instructions.
+
+---
+
 ## What This System Does
 
 The Credit OCR System automates the processing of credit-related documents:
@@ -90,6 +104,14 @@ The Credit OCR System automates the processing of credit-related documents:
    - **Executable Guide**: [`07_async_processing.ipynb`](./notebooks/7-async-processing/07_async_processing.ipynb) - Celery-based async document processing
    - **Deep Dive**: [`README.md`](./notebooks/7-async-processing/README.md) - Async processing theory, scaling patterns, and production considerations
 
+8. **API Service** → [`notebooks/8-api-service/`](./notebooks/8-api-service/)
+   - **Executable Guide**: [`08_api_service.ipynb`](./notebooks/8-api-service/08_api_service.ipynb) - FastAPI web service with real-time processing interface
+   - **Deep Dive**: [`README.md`](./notebooks/8-api-service/README.md) - API design, web interface architecture, and service integration
+
+9. **Application Setup** → [`notebooks/application-setup/`](./notebooks/application-setup/)
+   - **Executable Guide**: [`setup.ipynb`](./notebooks/application-setup/setup.ipynb) - One-command system startup and verification
+   - **Deep Dive**: [`README.md`](./notebooks/application-setup/README.md) - Complete application setup, troubleshooting, and architecture overview
+
 ## Development Workflow
 
 ### Initial Setup
@@ -168,12 +190,18 @@ credit-ocr-system/
 │   ├── 5-dms-upload/                     # DMS integration & document management
 │   │   ├── README.md                     # DMS patterns & adapter design guide
 │   │   └── 05_dms_upload.ipynb           # Document management system implementation
-│   └── 6-document-processing-status/     # Status models & extraction jobs
-│       ├── README.md                     # Status model theory & best practices
-│       └── 06_document_processing_status.ipynb # Status tracking implementation
-│   └── 7-async-processing/               # Async processing with Celery
-│       ├── README.md                     # Async processing theory & scaling patterns
-│       └── 07_async_processing.ipynb     # Celery-based async processing implementation
+│   ├── 6-document-processing-status/     # Status models & extraction jobs
+│   │   ├── README.md                     # Status model theory & best practices
+│   │   └── 06_document_processing_status.ipynb # Status tracking implementation
+│   ├── 7-async-processing/               # Async processing with Celery
+│   │   ├── README.md                     # Async processing theory & scaling patterns
+│   │   └── 07_async_processing.ipynb     # Celery-based async processing implementation
+│   ├── 8-api-service/                    # FastAPI web service & interface
+│   │   ├── README.md                     # API design & web interface architecture
+│   │   └── 08_api_service.ipynb          # Web service implementation
+│   └── application-setup/                # Complete application setup & troubleshooting
+│       ├── README.md                     # Setup guide & architecture overview
+│       └── setup.ipynb                   # One-command startup & verification
 ├── src/                                  # Application source code
 │   ├── __init__.py                       # Package initialization
 │   ├── config/                           # Configuration management
@@ -253,6 +281,8 @@ docker compose down && docker compose up -d
 
 ## Ready to Start?
 
-**👉 Begin with the setup tutorial: [`notebooks/1-setup/README.md`](./notebooks/1-setup/README.md)**
+**👉 Quick start: [`notebooks/application-setup/README.md`](./notebooks/application-setup/README.md)** - Get the full system running in minutes
+
+**👉 Learn step-by-step: [`notebooks/1-setup/README.md`](./notebooks/1-setup/README.md)** - Deep dive into the architecture
 
 Transform your document processing workflows from manual to intelligent in under 30 minutes.

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit OCR System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-status {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #f7fafc;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .status-dot.healthy {
+            background: #48bb78;
+            box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
+        }
+        
+        .status-dot.warning {
+            background: #ed8936;
+            box-shadow: 0 0 8px rgba(237, 137, 54, 0.5);
+            animation: pulse-warning 2s infinite;
+        }
+        
+        .status-dot.error {
+            background: #f56565;
+            box-shadow: 0 0 8px rgba(245, 101, 101, 0.5);
+        }
+        
+        .status-dot.loading {
+            background: #a0aec0;
+            animation: pulse-loading 1.5s infinite;
+        }
+        
+        @keyframes pulse-warning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        @keyframes pulse-loading {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .card-header h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding-left: 3rem;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: #ebf4ff;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #a0aec0;
+            margin-bottom: 1rem;
+        }
+        
+        .upload-text {
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: #cbd5e0;
+        }
+        
+        .btn-back {
+            position: absolute;
+            left: 0.5rem;
+            top: 0.5rem;
+            background: none;
+            border: 2px solid #667eea;
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            z-index: 10;
+        }
+        
+        .btn-back:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .field-list {
+            list-style: none;
+        }
+        
+        .field-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .field-name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .field-value {
+            color: #4a5568;
+            font-family: 'Monaco', monospace;
+        }
+        
+        .confidence-score {
+            font-size: 0.75rem;
+            color: #718096;
+        }
+        
+        .visualization-container {
+            text-align: center;
+        }
+        
+        .visualization-image {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .loading h3 {
+            margin: 1rem 0 0.5rem;
+            color: #2d3748;
+        }
+        
+        .loading p {
+            margin: 0 0 1.5rem;
+            color: #718096;
+        }
+        
+        .spinner {
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        .progress-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: #f7fafc;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active {
+            background: #ebf4ff;
+            border: 1px solid #4299e1;
+        }
+        
+        .step-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            background: white;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .step-indicator.completed {
+            border-color: #48bb78;
+            background: #48bb78;
+        }
+        
+        .step-indicator.completed::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .step-indicator.active {
+            border-color: #4299e1;
+            background: #4299e1;
+            animation: pulse 2s infinite;
+        }
+        
+        .step-indicator.active::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .step span {
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .step.active span {
+            color: #2b6cb0;
+            font-weight: 600;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Credit OCR System</h1>
+            <p>Upload PDF documents for automated text extraction and field processing</p>
+            
+            <!-- Service Status Indicator -->
+            <div class="service-status" id="serviceStatus">
+                <div class="status-item" id="status-database">
+                    <div class="status-dot loading"></div>
+                    <span>Database</span>
+                </div>
+                <div class="status-item" id="status-storage">
+                    <div class="status-dot loading"></div>
+                    <span>Storage</span>
+                </div>
+                <div class="status-item" id="status-ollama">
+                    <div class="status-dot loading"></div>
+                    <span>AI Service</span>
+                </div>
+                <div class="status-item" id="status-celery">
+                    <div class="status-dot loading"></div>
+                    <span>Processing</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" id="uploadCard">
+            <div class="card-header">
+                <h2>Upload Document</h2>
+            </div>
+            <div class="card-body">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">⬆</div>
+                    <div class="upload-text">
+                        <strong>Drop your PDF file here</strong> or click to browse
+                    </div>
+                    <button class="btn btn-primary" type="button" onclick="document.getElementById('fileInput').click()">
+                        Choose File
+                    </button>
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf" />
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <h3 id="loadingTitle">Processing your document...</h3>
+                    <p id="loadingDescription">Starting processing pipeline</p>
+                    <div class="progress-steps">
+                        <div class="step" id="step-upload">
+                            <div class="step-indicator completed"></div>
+                            <span>Document Uploaded</span>
+                        </div>
+                        <div class="step" id="step-ocr">
+                            <div class="step-indicator"></div>
+                            <span>OCR Text Extraction</span>
+                        </div>
+                        <div class="step" id="step-llm">
+                            <div class="step-indicator"></div>
+                            <span>AI Field Extraction</span>
+                        </div>
+                        <div class="step" id="step-complete">
+                            <div class="step-indicator"></div>
+                            <span>Processing Complete</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="error" class="error hidden"></div>
+            </div>
+        </div>
+        
+        <div class="card hidden" id="resultsCard">
+            <div class="card-header">
+                <button class="btn-back" onclick="resetForm()" title="Process Another Document">
+                    ←
+                </button>
+                <h2>Processing Results</h2>
+                <div id="statusBadge" class="status-badge"></div>
+            </div>
+            <div class="card-body">
+                <div class="results-grid">
+                    <div>
+                        <h3>Extracted Fields</h3>
+                        <ul class="field-list" id="fieldsList"></ul>
+                    </div>
+                    <div class="visualization-container">
+                        <h3>Document Visualization</h3>
+                        <div id="imageContainer" style="border: 1px solid #ccc; min-height: 200px; padding: 10px;">
+                            <img id="visualizationImage" class="visualization-image hidden" alt="Document with OCR overlays" style="max-width: 100%; height: auto;" />
+                            <p id="noVisualization">Visualization not available</p>
+                            <p id="debugInfo" style="font-size: 12px; color: #666;"></p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDocumentId = null;
+        let statusCheckInterval = null;
+        
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadCard = document.getElementById('uploadCard');
+        const fileInput = document.getElementById('fileInput');
+        const loading = document.getElementById('loading');
+        const error = document.getElementById('error');
+        const resultsCard = document.getElementById('resultsCard');
+        const statusBadge = document.getElementById('statusBadge');
+        const fieldsList = document.getElementById('fieldsList');
+        const visualizationImage = document.getElementById('visualizationImage');
+        const noVisualization = document.getElementById('noVisualization');
+        const debugInfo = document.getElementById('debugInfo');
+        
+        // Service status checking
+        let serviceStatusInterval = null;
+        
+        function checkServiceStatus() {
+            fetch('/api/v1/health')
+                .then(response => response.json())
+                .then(data => {
+                    updateServiceStatus(data);
+                })
+                .catch(error => {
+                    console.error('Failed to check service status:', error);
+                    // Set all services to error state
+                    updateServiceStatusDots({
+                        database: 'error',
+                        blob_storage: 'error',
+                        celery: 'error'
+                    });
+                });
+        }
+        
+        function updateServiceStatus(healthData) {
+            const services = healthData.services || {};
+            const statusMap = {};
+            
+            // Map service names
+            statusMap.database = parseServiceStatus(services.database);
+            statusMap.storage = parseServiceStatus(services.blob_storage);
+            statusMap.celery = parseServiceStatus(services.celery);
+            
+            // Check Ollama separately (it's not in health endpoint but we can infer from errors)
+            statusMap.ollama = 'healthy'; // Default to healthy, will be updated if errors occur
+            
+            updateServiceStatusDots(statusMap);
+        }
+        
+        function parseServiceStatus(status) {
+            if (!status || status === 'healthy') return 'healthy';
+            if (status.includes('unhealthy')) return 'error';
+            if (status.includes('starting') || status.includes('setup') || 
+                status.includes('downloading') || status.includes('pulling')) return 'warning';
+            return 'error';
+        }
+        
+        function updateServiceStatusDots(statusMap) {
+            Object.keys(statusMap).forEach(service => {
+                const statusElement = document.getElementById(`status-${service}`);
+                if (statusElement) {
+                    const dot = statusElement.querySelector('.status-dot');
+                    if (dot) {
+                        // Remove all status classes
+                        dot.classList.remove('healthy', 'warning', 'error', 'loading');
+                        // Add new status class
+                        dot.classList.add(statusMap[service]);
+                    }
+                }
+            });
+        }
+        
+        // Start service status checking
+        function startServiceStatusChecking() {
+            checkServiceStatus(); // Check immediately
+            serviceStatusInterval = setInterval(checkServiceStatus, 10000); // Check every 10 seconds
+        }
+        
+        // Initialize service status checking when page loads
+        document.addEventListener('DOMContentLoaded', startServiceStatusChecking);
+        
+        // File upload handling
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+        
+        async function handleFileUpload(file) {
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                showError('Please select a PDF file.');
+                return;
+            }
+            
+            hideError();
+            showLoading();
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/api/v1/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    currentDocumentId = result.document_id;
+                    startStatusChecking();
+                } else {
+                    throw new Error(result.detail || 'Upload failed');
+                }
+            } catch (err) {
+                hideLoading();
+                showError('Upload failed: ' + err.message);
+            }
+        }
+        
+        function startStatusChecking() {
+            statusCheckInterval = setInterval(checkStatus, 2000);
+            checkStatus(); // Check immediately
+        }
+        
+        async function checkStatus() {
+            if (!currentDocumentId) return;
+            
+            try {
+                const response = await fetch(`/api/v1/status/${currentDocumentId}`);
+                const status = await response.json();
+                
+                updateStatusDisplay(status.status);
+                
+                if (status.status === 'completed') {
+                    clearInterval(statusCheckInterval);
+                    await loadResults();
+                    loading.style.display = 'none';
+                    // Don't show upload area again - results are now visible
+                } else if (status.status === 'failed') {
+                    clearInterval(statusCheckInterval);
+                    hideLoading();
+                    showError('Document processing failed: ' + (status.error_message || 'Unknown error'));
+                }
+            } catch (err) {
+                console.error('Status check failed:', err);
+            }
+        }
+        
+        async function loadResults() {
+            try {
+                const response = await fetch(`/api/v1/results/${currentDocumentId}`);
+                const results = await response.json();
+                
+                displayResults(results);
+                resultsCard.classList.remove('hidden');
+                uploadCard.classList.add('hidden');
+            } catch (err) {
+                showError('Failed to load results: ' + err.message);
+            }
+        }
+        
+        function displayResults(results) {
+            // Clear previous results
+            fieldsList.innerHTML = '';
+            
+            // Display extracted fields
+            if (results.extracted_fields && Array.isArray(results.extracted_fields)) {
+                results.extracted_fields.forEach(field => {
+                const li = document.createElement('li');
+                li.className = 'field-item';
+                li.innerHTML = `
+                    <div>
+                        <div class="field-name">${field.field_name}</div>
+                        ${field.confidence_score ? `<div class="confidence-score">Confidence: ${(field.confidence_score * 100).toFixed(1)}%</div>` : ''}
+                    </div>
+                    <div class="field-value">${field.extracted_value || 'N/A'}</div>
+                `;
+                fieldsList.appendChild(li);
+                });
+            } else {
+                // No extracted fields available
+                const li = document.createElement('li');
+                li.className = 'field-item';
+                li.innerHTML = '<div class="field-value">No extracted fields available yet</div>';
+                fieldsList.appendChild(li);
+            }
+            
+            // Display visualization if available
+            console.log('=== VISUALIZATION DEBUG ===');
+            console.log('has_visualization:', results.has_visualization);
+            console.log('currentDocumentId:', currentDocumentId);
+            console.log('visualizationImage element:', visualizationImage);
+            console.log('noVisualization element:', noVisualization);
+            
+            // Always try to load visualization, regardless of has_visualization flag
+            // This fixes the issue where has_visualization may be null/false due to database issues
+            console.log('Attempting to load visualization for document:', currentDocumentId);
+            const timestamp = new Date().getTime();
+            const vizUrl = `/api/v1/visualization/${currentDocumentId}?page=1&t=${timestamp}`;
+            console.log('Setting image src to:', vizUrl);
+            
+            // Clear any previous handlers
+            visualizationImage.onload = null;
+            visualizationImage.onerror = null;
+            
+            // Set up new handlers before setting src
+            visualizationImage.onload = function() {
+                console.log('✓ Visualization image loaded successfully!');
+                console.log('Image dimensions:', this.naturalWidth, 'x', this.naturalHeight);
+                // Force show the image
+                this.classList.remove('hidden');
+                this.style.display = 'block';
+                // Force hide the "not available" message
+                noVisualization.style.display = 'none';
+                // Update debug info
+                debugInfo.textContent = `Image loaded: ${this.naturalWidth}x${this.naturalHeight}px`;
+            };
+            
+            visualizationImage.onerror = function() {
+                console.error('✗ Failed to load visualization image');
+                console.log('This is expected if processing is not yet complete or visualization generation failed');
+                // Force hide the image
+                this.classList.add('hidden');
+                this.style.display = 'none';
+                // Force show the "not available" message
+                noVisualization.style.display = 'block';
+                // Update debug info
+                debugInfo.textContent = `Visualization not available yet (processing may still be in progress)`;
+            };
+            
+            // Update debug info
+            debugInfo.textContent = `Loading image from: ${vizUrl}`;
+            
+            // Set the source (this will trigger loading)
+            visualizationImage.src = vizUrl;
+            console.log('Image src set, waiting for load...');
+        }
+        
+        function updateStatusDisplay(status) {
+            statusBadge.textContent = status;
+            statusBadge.className = 'status-badge status-' + status.replace('_', '-');
+            
+            // Update progress steps and loading messages
+            updateProgressSteps(status);
+        }
+        
+        function updateProgressSteps(status) {
+            const loadingTitle = document.getElementById('loadingTitle');
+            const loadingDescription = document.getElementById('loadingDescription');
+            
+            // Reset all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+                step.querySelector('.step-indicator').classList.remove('active');
+            });
+            
+            switch(status) {
+                case 'pending':
+                    loadingTitle.textContent = 'Preparing document...';
+                    loadingDescription.textContent = 'Initializing processing pipeline';
+                    break;
+                    
+                case 'ocr_running':
+                    loadingTitle.textContent = 'Extracting text from document...';
+                    loadingDescription.textContent = 'AI is reading and analyzing the document content';
+                    markStepActive('step-ocr');
+                    break;
+                    
+                case 'llm_running':
+                    loadingTitle.textContent = 'Extracting specific fields...';
+                    loadingDescription.textContent = 'AI is analyzing document content (this may take 1-3 minutes for the first processing)';
+                    markStepCompleted('step-ocr');
+                    markStepActive('step-llm');
+                    break;
+                    
+                case 'completed':
+                    loadingTitle.textContent = 'Processing complete!';
+                    loadingDescription.textContent = 'All information has been successfully extracted';
+                    markStepCompleted('step-ocr');
+                    markStepCompleted('step-llm');
+                    markStepCompleted('step-complete');
+                    break;
+                    
+                case 'failed':
+                    loadingTitle.textContent = 'Processing failed';
+                    loadingDescription.textContent = 'An error occurred during processing';
+                    break;
+                    
+                default:
+                    loadingTitle.textContent = 'Processing your document...';
+                    loadingDescription.textContent = 'Please wait while we process your document';
+            }
+        }
+        
+        function markStepActive(stepId) {
+            const step = document.getElementById(stepId);
+            if (step) {
+                step.classList.add('active');
+                step.querySelector('.step-indicator').classList.add('active');
+            }
+        }
+        
+        function markStepCompleted(stepId) {
+            const step = document.getElementById(stepId);
+            if (step) {
+                step.classList.remove('active');
+                const indicator = step.querySelector('.step-indicator');
+                indicator.classList.remove('active');
+                indicator.classList.add('completed');
+            }
+        }
+        
+        function showLoading() {
+            uploadArea.style.display = 'none';
+            loading.style.display = 'block';
+        }
+        
+        function hideLoading() {
+            loading.style.display = 'none';
+            uploadArea.style.display = 'block';
+        }
+        
+        function showError(message) {
+            error.textContent = message;
+            error.classList.remove('hidden');
+        }
+        
+        function hideError() {
+            error.classList.add('hidden');
+        }
+        
+        
+        
+        function resetForm() {
+            currentDocumentId = null;
+            if (statusCheckInterval) {
+                clearInterval(statusCheckInterval);
+            }
+            // Hide results and show upload card
+            resultsCard.classList.add('hidden');
+            uploadCard.classList.remove('hidden');
+            fileInput.value = '';
+            hideError();
+            // Show upload area and hide loading
+            loading.style.display = 'none';
+            uploadArea.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,7 +1,3 @@
-"""
-Async document processing service using Celery.
-"""
-
 import logging
 from typing import Optional
 from src.dms.service import DmsService

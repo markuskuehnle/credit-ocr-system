@@ -1,7 +1,3 @@
-"""
-Concrete adapters implementing DMS interfaces: Azure Blob storage and Postgres metadata.
-"""
-
 from __future__ import annotations
 
 from typing import Optional, List, Dict, Any
@@ -228,6 +224,34 @@ class PostgresMetadataRepository(MetadataRepository):
                     "completed_at": row[3],
                     "status": row[4],
                     "error_message": row[5],
+                }
+                for row in rows
+            ]
+
+    def list_documents_paginated(self, limit: int, offset: int) -> List[Dict[str, Any]]:
+        """List documents with pagination."""
+        with self._conn.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id, file_path, filename, created_at, mime_type, file_size,
+                       text_extraction_status, processing_status
+                FROM documents 
+                ORDER BY created_at DESC
+                LIMIT %s OFFSET %s
+                """,
+                (limit, offset),
+            )
+            rows = cursor.fetchall()
+            return [
+                {
+                    "document_id": row[0],
+                    "blob_path": row[1],
+                    "filename": row[2],
+                    "upload_timestamp": row[3],
+                    "mime_type": row[4],
+                    "file_size": row[5],
+                    "textextraction_status": row[6],
+                    "processing_status": row[7],
                 }
                 for row in rows
             ]

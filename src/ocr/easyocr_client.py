@@ -1,7 +1,3 @@
-"""
-EasyOCR client for text extraction with bounding boxes.
-"""
-
 from typing import List, Dict, Any, Tuple
 import numpy as np
 from pdf2image import convert_from_path

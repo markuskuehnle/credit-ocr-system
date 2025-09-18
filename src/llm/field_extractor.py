@@ -1,7 +1,3 @@
-"""
-LLM-based field extraction from OCR results.
-"""
-
 import json
 import re
 from typing import Dict, List, Any

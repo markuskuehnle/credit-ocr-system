@@ -1,7 +1,3 @@
-"""
-Celery application configuration for async document processing.
-"""
-
 from celery import Celery
 from src.config import AppConfig
 

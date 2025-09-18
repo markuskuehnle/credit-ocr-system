@@ -1,7 +1,3 @@
-"""
-OCR post-processing functions for normalization and structuring.
-"""
-
 from typing import List, Dict, Any
 from .label_value_extraction import extract_label_value_pairs
 

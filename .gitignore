@@ -1,4 +1,6 @@
 tasks.md
 .venv
-__pycache__
 *.egg*
+build/
+*cache*
+*.log

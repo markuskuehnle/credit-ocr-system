@@ -1,7 +1,3 @@
-"""
-LLM client implementations for field extraction.
-"""
-
 from abc import ABC, abstractmethod
 import aiohttp
 from typing import Dict, List, Any

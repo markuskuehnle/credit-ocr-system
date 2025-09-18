@@ -168,4 +168,64 @@ class DmsService:
         """Set processing_status to 'done'."""
         return self.metadata_repository.update_processing_status(document_id, "done")
 
+    def store_document(self, document_id: str, filename: str, file_data: bytes) -> str:
+        """
+        Store a document directly from file data (for API uploads).
+        
+        Args:
+            document_id: Unique document identifier
+            filename: Original filename
+            file_data: File content as bytes
+            
+        Returns:
+            Document ID
+        """
+        # Determine file extension from filename
+        file_extension = Path(filename).suffix.lower()
+        if not file_extension:
+            file_extension = ".pdf"  # Default to PDF
+        
+        # Create blob path
+        blob_name = f"raw/credit_request/{document_id}{file_extension}"
+        
+        # Upload to blob storage
+        self.storage_client.upload_bytes("documents", blob_name, file_data)
+        logger.info(f"File uploaded to blob storage: {blob_name}")
+        
+        # Calculate hash
+        file_hash = hashlib.sha256(file_data).hexdigest()
+        
+        # Determine MIME type
+        mime_type, _ = mimetypes.guess_type(filename)
+        if not mime_type:
+            mime_type = "application/pdf"
+        
+        # Store metadata
+        self.metadata_repository.insert_document(
+            document_id=document_id,
+            dms_path=blob_name,
+            document_type="credit_request",
+            hash_sha256=file_hash,
+            source_filename=filename,
+            linked_entity=None,
+            linked_entity_id=None,
+            textextraction_status="ready",
+        )
+        
+        logger.info(f"Document record created in database with ID: {document_id}")
+        return document_id
+
+    def list_documents(self, limit: int = 50, offset: int = 0) -> List[Dict[str, Any]]:
+        """
+        List documents with pagination.
+        
+        Args:
+            limit: Maximum number of documents to return
+            offset: Number of documents to skip
+            
+        Returns:
+            List of document metadata dictionaries
+        """
+        return self.metadata_repository.list_documents_paginated(limit, offset)
+
 

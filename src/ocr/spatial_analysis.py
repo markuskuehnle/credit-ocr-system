@@ -1,7 +1,3 @@
-"""
-Spatial analysis functions for OCR text reconstruction.
-"""
-
 from typing import List, Dict, Any
 
 

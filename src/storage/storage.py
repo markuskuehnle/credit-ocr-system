@@ -1,7 +1,3 @@
-"""
-Blob storage operations for document processing stages.
-"""
-
 import os
 import threading
 from enum import Enum
@@ -116,6 +112,8 @@ class BlobStorage:
         """Ensure all document containers are ready for use (for test setup)."""
         for stage in Stage:
             self._ensure_container_exists(stage.value)
+        # Also ensure the documents container exists for DMS operations
+        self._ensure_container_exists("documents")
     
     def blob_path(self, uuid: str, stage: Stage, ext: str) -> PurePosixPath:
         """
