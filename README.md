@@ -8,20 +8,6 @@ This project is a comprehensive tutorial that guides you through building a scal
 
 ---
 
-## 🚀 Quick Start
-
-**Want to try it immediately?** Use our one-command startup:
-
-```bash
-python3 start_credit_ocr.py
-```
-
-This starts the complete system with web interface at http://127.0.0.1:8000/
-
-📖 See [QUICKSTART.md](QUICKSTART.md) for detailed instructions.
-
----
-
 ## What This System Does
 
 The Credit OCR System automates the processing of credit-related documents:
