@@ -270,5 +270,3 @@ docker compose down && docker compose up -d
 **👉 Quick start: [`notebooks/9-application-setup/README.md`](./notebooks/9-application-setup/README.md)** - Get the full system running in minutes
 
 **👉 Learn step-by-step: [`notebooks/1-setup/README.md`](./notebooks/1-setup/README.md)** - Deep dive into the architecture
-
-Transform your document processing workflows from manual to intelligent in under 30 minutes.
