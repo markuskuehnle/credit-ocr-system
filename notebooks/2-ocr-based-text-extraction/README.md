@@ -151,14 +151,8 @@ What makes our approach effective is the spatial analysis layer we build on top.
 
 **How OCR Fits into the Credit Processing Pipeline:**
 
-```
-Document Upload → OCR Processing → Storage → LLM Analysis → Storage → API Delivery
-     ↓              ↓                ↓           ↓             ↓           ↓       
-   DMS           EasyOCR +        PostgreSQL    Ollama      Azurite     Frontend
-                 Spatial          (Metadata)                (LLM Blobs) (Display)
-                 Analysis         Azurite
-                                  (OCR Blobs)
-```
+
+![OCR Pipeline Overview](../../docs/imgs/2-ocr-text-extraction-3.png)
 
 This tutorial focuses on the **OCR Processing** phase, where we extract structured data from documents. The extracted information flows to PostgreSQL for metadata storage and Azurite for blob storage (OCR results), gets analyzed by Ollama (LLM), and is later delivered to frontend applications for user review and correction.
 
