@@ -4,6 +4,14 @@
 
 ![OCR Text Extraction](../../docs/imgs/2-ocr-text-extraction.png)
 
+## Pipeline Architecture
+
+Here's the complete OCR text extraction pipeline that transforms raw PDFs into structured, business-ready data:
+
+![OCR Pipeline Architecture](../../docs/imgs/2-ocr-text-extraction-2.png)
+
+This pipeline demonstrates how we systematically process documents from chaotic OCR output to clean, structured data ready for LLM analysis.
+
 ---
 
 ## Prerequisites & Setup

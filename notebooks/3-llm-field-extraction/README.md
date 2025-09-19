@@ -4,6 +4,14 @@
 
 ![LLM Field Extraction](../../docs/imgs/3-llm-field-extraction.png)
 
+## Pipeline Architecture
+
+Here's the complete LLM field extraction pipeline that transforms OCR data into validated, structured business fields:
+
+![LLM Pipeline Architecture](../../docs/imgs/3-llm-field-extraction-2.png)
+
+This pipeline shows how we intelligently process OCR output through LLM analysis, field validation, and metadata preservation to create production-ready structured data.
+
 ---
 
 ## Prerequisites & Setup
