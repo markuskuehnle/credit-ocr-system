@@ -1,5 +1,19 @@
 # Credit OCR System - Application Setup Guide
 
+## Application Showcase
+
+Here's what you'll be building - a complete document processing web application:
+
+![Credit OCR System Web Interface](../../docs/imgs/9-application-ui.png)
+
+**Key Features Shown:**
+- **Clean Upload Interface**: Upload PDF documents
+- **Real-time Progress Tracking**: Visual progress indicators for OCR and AI processing stages
+- **Service Status Monitoring**: Live status dots for all system components (Database, Storage, AI Service, Processing)
+- **Extracted Field Results**: Structured data extraction from documents
+- **OCR Visualization**: Interactive overlay showing detected text regions with confidence scores
+- **Professional UI/UX**: Modern, responsive design suitable for business environments
+
 ## One-Command Startup
 
 The easiest way to start the complete Credit OCR System:
