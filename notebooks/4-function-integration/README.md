@@ -2,8 +2,6 @@
 
 *Integrate OCR and LLM components into a cohesive document processing workflow*
 
-![Function Integration](../../docs/imgs/4-function-integration.png)
-
 ---
 
 ## Prerequisites & Setup

@@ -2,8 +2,6 @@
 
 *Learn how to integrate document management systems with your AI processing pipeline*
 
-![DMS Upload](../../docs/imgs/5-dms-upload.png)
-
 ---
 
 ## Prerequisites & Setup

@@ -2,8 +2,6 @@
 
 *Operational visibility for your document pipeline: readiness, progress, and jobs*
 
-![Processing Status](../../docs/imgs/3-llm-field-extraction.png)
-
 ---
 
 ## Prerequisites & Setup
