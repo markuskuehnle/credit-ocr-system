@@ -47,6 +47,23 @@ This notebook demonstrates how to implement asynchronous document
 
 ---
 
+## Task Status Flow
+
+Here's how documents flow through the async processing pipeline:
+
+```
+pending → ocr_running → llm_running → done
+     ↓         ↓           ↓         ↓
+   failed ← failed ← failed ← failed
+```
+
+**Status Transitions:**
+- `pending`: Document uploaded, waiting for worker pickup
+- `ocr_running`: Celery worker processing OCR extraction
+- `llm_running`: Celery worker processing LLM field extraction
+- `done`: All processing completed successfully
+- `failed`: Processing failed at any stage (with error details)
+
 ## Core Concepts
 
 ### 1. Celery Architecture

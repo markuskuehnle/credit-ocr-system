@@ -2,6 +2,14 @@
 
 *Building a production-ready FastAPI service to expose our credit OCR system via HTTP endpoints*
 
+## FastAPI Service Architecture
+
+Here's how the FastAPI service integrates with the async processing pipeline:
+
+![FastAPI Service Architecture](../../docs/imgs/7-fast-api-service-architecture.png)
+
+This architecture demonstrates the complete flow from API requests through background processing to result delivery.
+
 ---
 
 ## What You'll Learn

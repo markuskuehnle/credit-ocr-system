@@ -2,6 +2,14 @@
 
 *Operational visibility for your document pipeline: readiness, progress, and jobs*
 
+## Data Flow Architecture
+
+Here's how document status and processing data flows through the system:
+
+![Data Flow Architecture](../../docs/imgs/6-data-flow-architecture.png)
+
+This architecture shows the relationship between document storage, status tracking, and the various services that update and query processing states.
+
 ---
 
 ## Prerequisites & Setup
@@ -37,6 +45,24 @@ By the end, you'll understand how to:
 ---
 
 ## Core Concepts
+
+### Document Status Flow
+
+The system tracks document processing through multiple status dimensions:
+
+**Processing Status Flow:**
+```
+pending extraction → ocr running → llm running → done
+        ↓                ↓            ↓        ↓
+      failed ←        failed ←    failed ←  failed
+```
+
+**Text Extraction Status Flow:**
+```
+not ready → ready → in progress → completed
+    ↓         ↓         ↓            ↓
+  failed ←  failed ←  failed ←    failed
+```
 
 ### 1) Two Status Models + Jobs (Why two?)
 

@@ -54,6 +54,10 @@ A modular, integrated pipeline that combines all components while preserving the
 - Storage organization using processing stages
 - Visualization for quality assurance and debugging
 
+## Pipeline Overview
+
+![Pipeline Overview](../../docs/imgs/4-function-integration.png)
+
 ## Core Concepts
 
 ### Why We Built It This Way
