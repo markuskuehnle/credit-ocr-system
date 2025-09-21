@@ -94,7 +94,7 @@ The Credit OCR System automates the processing of credit-related documents:
    - **Executable Guide**: [`08_api_service.ipynb`](./notebooks/8-api-service/08_api_service.ipynb) - FastAPI web service with real-time processing interface
    - **Deep Dive**: [`README.md`](./notebooks/8-api-service/README.md) - API design, web interface architecture, and service integration
 
-9. **Application Setup** → [`notebooks/application-setup/`](./notebooks/9-application-setup/)
+9. **Application Setup** → [`notebooks/9-application-setup/`](./notebooks/9-application-setup/)
    - **Executable Guide**: [`setup.ipynb`](./notebooks/9-application-setup/setup.ipynb) - One-command system startup and verification
    - **Deep Dive**: [`README.md`](./notebooks/9-application-setup/README.md) - Complete application setup, troubleshooting, and architecture overview
 
