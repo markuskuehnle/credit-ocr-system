@@ -124,6 +124,7 @@ This approach combines the flexibility of natural language understanding with th
 - **[Anthropic Claude API](https://docs.anthropic.com/claude/reference)** - Alternative LLM provider with strong reasoning capabilities
 - **[Prompt Engineering Guide](https://www.promptingguide.ai/)** - Best practices for designing effective prompts
 - **[Ollama Documentation](https://ollama.ai/docs)** - Local LLM deployment and management
+- **[Prompt Versioning with Opik - Video Crashcourse](https://www.youtube.com/watch?v=Yy0szt5OlNI)** by Miguel Otero Pedrido - Essential guide to prompt versioning and management for production LLM systems
 
 #### Field Validation & Business Rules
 - **[JSON Schema Validation](https://json-schema.org/learn/getting-started-step-by-step)** - Standard for data validation
