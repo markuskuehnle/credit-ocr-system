@@ -96,7 +96,7 @@ services:
       test: ["CMD", "/opt/venv/bin/python", "-m", "celery", "-A", "src.celery_app", "inspect", "ping"]
       interval: 30s
       timeout: 10s
-      retries: 3e 
+      retries: 3
 
 volumes:
   pgdata:
